@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using World2D.Generator.Data;
 using World2D.Generator.Model;
 using World2D.Generator.Settings;
@@ -7,8 +8,12 @@ namespace World2D.Generator.Space
 {
     public class MapGenerator
     {
+        private Queue<VisualToRender> _renderQueue;
+        public Queue<VisualToRender> RenderQueue => _renderQueue;
         private readonly TileMapData _mapData;
+        private LocationsMapData _locationMapData;
         public TileMapData MapData => _mapData;
+        public LocationsMapData LocationMapData => _locationMapData;
 
         private readonly LandModel[] _landBiomes;
         private readonly WaterModel[] _waterBiomes;
@@ -18,6 +23,7 @@ namespace World2D.Generator.Space
 
         private LandMapGenerator _landMapGenerator;
         private WaterMapGenerator _waterMapGenerator;
+        private LocationGenerator _locationGenerator;
 
         private readonly Random _random;
 
@@ -39,6 +45,20 @@ namespace World2D.Generator.Space
 
             _waterMapGenerator = new WaterMapGenerator(_random, _waterBiomes, _waterNoiseMapSettings);
             _waterMapGenerator.GenerateWaterMap(_mapData);
+
+            _locationGenerator = new LocationGenerator(_random, _mapData);
+            _locationGenerator.GenerateLocations();
+            _locationMapData = _locationGenerator.LocationMap;
+
+            VisualGenerator objectGenerator = new VisualGenerator(_random, _mapData, _locationMapData);
+
+            _renderQueue = objectGenerator.Generate();
+
+            foreach (var visual in _locationGenerator.LocationVisualList)
+            {
+                _renderQueue.Enqueue(visual);
+            }
+
         }
     }
 }

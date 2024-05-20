@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using World2D.Generator.Data;
 using World2D.Generator.Noise;
 
 namespace World2D.Utilites
@@ -25,6 +26,8 @@ namespace World2D.Utilites
             {
                 mapGen.GenerateMap();
             }
+
         }
     }
+    
 }

@@ -45,7 +45,7 @@ namespace World2D.Generator.Noise
             {
                 for (int x = 0; x < width; x++)
                 {
-                    map[y,x] = CalculateValue(x,y);
+                    map[y, x] = CalculateValue(x, y);
                 }
             }
             return map;

@@ -33,13 +33,16 @@ namespace World2D.Generator.Noise
         public bool AutoUpdate => _autoUpdate;
 
         private TileMapData _mapData { get; set; }
+        private LocationsMapData _locationsMapData;
+
+        public LocationsMapData LocationsMapData => _locationsMapData;
 
         [SerializeField]
         private MapDisplay _display;
 
         private void ResetMap()
         {
-            for (int i = transform.childCount - 1; i >= 0; --i)
+            for (int i = transform.childCount - 1; i >= 0; i--)
             {
                 DestroyImmediate(transform.GetChild(i).gameObject);
             }
@@ -66,10 +69,31 @@ namespace World2D.Generator.Noise
             mapGenerator.Generate();
 
             _mapData = mapGenerator.MapData;
+            _locationsMapData = mapGenerator.LocationMapData;
 
             MapDisplay mapDisplay = new MapDisplay();
 
             mapDisplay.Render(transform, _mapData);
+
+            VisualDisplay visualDisplay = new VisualDisplay();
+
+            visualDisplay.Render(transform, mapGenerator.RenderQueue);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_locationsMapData != null)
+            {
+                foreach (var location in _locationsMapData.LocationsData)
+                {
+                    Gizmos.color = Color.yellow;
+                    foreach (var tile in location.Tiles)
+                    {
+                        Vector3 worldPos = new Vector3(tile.x + 0.5f, tile.y + 0.5f, -0.2f);
+                        Gizmos.DrawWireCube(worldPos, Vector3.one);
+                    }
+                }
+            }
         }
     }
 }

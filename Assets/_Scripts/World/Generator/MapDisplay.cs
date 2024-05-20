@@ -54,21 +54,21 @@ namespace World2D.Generator.Noise
 
         private Grid CreateGrid(Transform parent)
         {
-            GameObject gameObject = new GameObject("Grid");
+            var gameObject = new GameObject("Grid");
             gameObject.transform.parent = parent;
 
-            Grid grid = gameObject.AddComponent<Grid>();
+            var grid = gameObject.AddComponent<Grid>();
 
             return grid;
         }
 
         private Tilemap CreateTilemap(Transform parent, string name)
         {
-            GameObject gameObject = new GameObject(name);
+            var gameObject = new GameObject(name);
             gameObject.transform.parent = parent;
             gameObject.AddComponent<TilemapRenderer>();
 
-            Tilemap tilemap = gameObject.GetComponent<Tilemap>();
+            var tilemap = gameObject.GetComponent<Tilemap>();
 
             return tilemap;
         }
